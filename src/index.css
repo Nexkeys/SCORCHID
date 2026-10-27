@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  /* --accent is driven live by ScrollMood in the canvas. Default cyan. */
+  --accent: #22d3ee;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis owns smoothing; native smooth-scroll would fight it */
+}
+
+body {
+  @apply bg-coal font-body text-neutral-100 antialiased;
+  overflow-x: hidden;
+}
+
+@layer components {
+  /* HUD micro label: [ 02 ] PROTOCOL */
+  .hud {
+    @apply font-mono text-[10px] uppercase tracking-widest2 text-neutral-500 md:text-[11px];
+  }
+  .display {
+    @apply font-display uppercase leading-[0.86] tracking-tight;
+  }
+  .hairline {
+    @apply border-white/10;
+  }
+  /* Panel with corner ticks (igloo-style HUD frame). */
+  .panel {
+    @apply relative border border-white/10 bg-coal/70;
+  }
+  .panel::before,
+  .panel::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--accent);
+    pointer-events: none;
+  }
+  .panel::before {
+    top: -1px;
+    left: -1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+  }
+}
+
+/* Rolling text: two stacked copies, hover rolls the second into view. */
+.roll {
+  display: inline-flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.15em;
+  line-height: 1.15em;
+}
+.roll > span {
+  transition: transform 0.55s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.group:hover .roll > span,
+.roll:hover > span {
+  transform: translateY(-100%);
+}
+
+/* Custom cursor replaces the arrow on fine pointers only. */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor * {
+    cursor: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+::selection {
+  background: var(--accent);
+  color: #07090b;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
