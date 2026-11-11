@@ -4,6 +4,6 @@ dist
 *.local
 npm-debug.log*
 .dahl/
-.claude
+.claude/
 .env
-progress.md
+PROGRESS.md
